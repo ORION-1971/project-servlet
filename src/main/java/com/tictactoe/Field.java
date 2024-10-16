@@ -9,7 +9,7 @@ public class Field {
     private final Map<Integer, Sign> field;
 
     public Field() {
-        field = new HashMap<>();
+        field = new HashMap<>();    // В первой строке 0, 1 и 2. Во второй: 3, 4 и 5. И так далее.
         field.put(0, Sign.EMPTY);
         field.put(1, Sign.EMPTY);
         field.put(2, Sign.EMPTY);
@@ -25,13 +25,13 @@ public class Field {
         return field;
     }
 
-    public int getEmptyFieldIndex() {
+    public int getEmptyFieldIndex() {     // ищет первую незанятую ячейку (да, соперник у нас будет не очень умным)
         return field.entrySet().stream()
                 .filter(e -> e.getValue() == Sign.EMPTY)
                 .map(Map.Entry::getKey)
                 .findFirst().orElse(-1);
     }
-
+        // возвращает значения мапы “field” в виде списка, отсортированного в порядке возрастания индексов.
     public List<Sign> getFieldData() {
         return field.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())
@@ -39,7 +39,7 @@ public class Field {
                 .collect(Collectors.toList());
     }
 
-    public Sign checkWin() {
+    public Sign checkWin() {              //  проверяет не завершена ли игра.
         List<List<Integer>> winPossibilities = List.of(
                 List.of(0, 1, 2),
                 List.of(3, 4, 5),
@@ -50,7 +50,7 @@ public class Field {
                 List.of(0, 4, 8),
                 List.of(2, 4, 6)
         );
-
+        // Если есть ряд из трех крестиков – возвращает крестик, если из трех ноликов – нолик. Иначе – пустоту.
         for (List<Integer> winPossibility : winPossibilities) {
             if (field.get(winPossibility.get(0)) == field.get(winPossibility.get(1))
                 && field.get(winPossibility.get(0)) == field.get(winPossibility.get(2))) {
